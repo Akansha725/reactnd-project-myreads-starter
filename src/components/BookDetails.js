@@ -17,13 +17,15 @@ export default class BookDetails extends React.Component {
     return (
         <div className="book">
           <div className="book-top">
-            <div className="book-cover"
-                  style={{
-                        width: 128,
-                        height: 192,
-                        backgroundImage: `url(${detail.imageLinks.thumbnail})`
-                      }}>
-            </div>
+            { detail.imageLinks &&
+                <div className="book-cover"
+                      style={{
+                            width: 128,
+                            height: 192,
+                            backgroundImage: `url(${detail.imageLinks.thumbnail})`
+                          }}>
+                </div>
+            }
             <ReadingOptions
               readingOption={detail.shelf}
               updateShelf={this.updateShelf}/>

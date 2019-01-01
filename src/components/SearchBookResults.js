@@ -19,14 +19,15 @@ export default class SearchBookResults extends React.Component {
 
   static getDerivedStateFromProps(props, state){
     let updateList = props.searchList
-    updateList.forEach((searchBook) => {
-      state.readingList.forEach(readingBook => {
-        if(readingBook.id === searchBook.id){
-          searchBook["shelf"] = readingBook.shelf
-        }
+    if(updateList && updateList !== []) {
+      updateList.forEach((searchBook) => {
+        state.readingList.forEach(readingBook => {
+          if(readingBook.id === searchBook.id){
+            searchBook["shelf"] = readingBook.shelf
+          }
+        })
       })
-    })
-
+    }
     return { searchList: updateList }
   }
 
@@ -35,12 +36,12 @@ export default class SearchBookResults extends React.Component {
     return (
         <div className="bookshelf">
           <div className="bookshelf-books">
-            {  !Array.isArray(searchList) &&
-                   <div> No result found.</div>
+            {  !searchList &&
+                   <div>No result found.</div>
             }
-            { Array.isArray(searchList) &&
+            { searchList &&
                 <ol className="books-grid">
-                    {searchList.map(bookDetail => (
+                    { searchList.map(bookDetail => (
                            <li key={bookDetail.id}>
                               <BookDetails detail={bookDetail}/>
                            </li>

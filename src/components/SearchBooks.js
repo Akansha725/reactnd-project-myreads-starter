@@ -6,19 +6,29 @@ import SearchBookResults from './SearchBookResults'
 export default class SearchBooks extends React.Component {
 
   state = {
-    searchList: []
+    searchList: [],
+    searchKeyword: ''
   }
 
   onSearch(value){
-    BooksAPI.search(value)
-            .then((searchList) => {
-               this.setState({
-                 searchList: searchList
-               })
-             });
+    this.setState({
+      searchKeyword: value
+    })
+    if(value !== ''){
+      BooksAPI.search(value)
+              .then((searchList) => {
+                 this.setState({
+                   searchList: Array.isArray(searchList) ? searchList : []
+                 })
+               });
+    }else {
+      this.setState({
+        searchList: undefined
+      })
+    }
   }
   render(){
-    let { searchList } = this.state
+    let { searchList, searchKeyword } = this.state
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -28,6 +38,7 @@ export default class SearchBooks extends React.Component {
         <div className="search-books-input-wrapper">
           <input
             type="text"
+            value={searchKeyword}
             placeholder="Search by title or author"
             onChange={(e) => this.onSearch(e.target.value)} />
         </div>
